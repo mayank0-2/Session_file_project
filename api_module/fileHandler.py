@@ -11,6 +11,8 @@ class file_handler(APIView) :
             return response.plusResponse(404, "Session_not_found", {})
         for i in range(1, 16) :
             file = request.FILES.get(f'file{i}')
+            if file is None :
+                break
             print(file, "---------------->file")
             if not file :
                 return response.plusResponse(400, "File_not_found", {})
