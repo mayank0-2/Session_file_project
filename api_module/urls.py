@@ -15,9 +15,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+from api_module.sessionHandler import create_session, delete_session
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include('api_module.urls')),
+    path('v1/create-session', create_session.as_view(), name = "CreateSession"),
+    path('v1/delete-session', delete_session.as_view(), name ='DeleteSession'),
 ]
