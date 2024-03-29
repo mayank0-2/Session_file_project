@@ -13,7 +13,7 @@ class create_session(APIView):
         defaultSessionTime = int(Config().DEFALUT_SESSION_TIME)
         session_id = str(uuid.uuid4())
         session[session_id] = {
-            'flies' : [],
+            'files' : [],
             'total_sum' : 0,
             'session_expiry_time' : datetime.now() + timedelta(defaultSessionTime)
         }
@@ -38,6 +38,7 @@ class delete_session(APIView):
 
 class verify_and_update_session_data() :
     def is_session_valid(self, session_id) :
+        print(session_id)
         if session_id not in session:
             return False
         if session[session_id]['session_expiry_time'] < datetime.now():
@@ -47,10 +48,18 @@ class verify_and_update_session_data() :
     
     
     def remove_oldest_file(self, session_id) :
-        os.remove(session[session_id]['flies'].pop(0)['relative_path'])
+        os.remove(session[session_id]['files'].pop(0)['relative_path'])
 
 
 
-    def add_new_file(self, session_id, file) :
-        session[session_id]['flies'].append(file)
+    def add_new_file(self, session_id, file, result = 0) :
+        session[session_id]['files'].append(file)
         session[session_id]['total_sum'] += result
+
+    def check_if_file_exists(self, session_id, file_name):
+        print('sessions' , session)
+        print('file_nme', file_name)
+        for row in session[session_id]['files']:
+            print(row)
+            if row['file_name'] == file_name:
+                return JsonResponse({'error': 'File already exists in the session'}, status=400)
