@@ -14,7 +14,7 @@ class create_session(APIView):
         session_id = str(uuid.uuid4())
         session[session_id] = {
             'flies' : [],
-            'files_count' : 0,
+            'total_sum' : 0,
             'session_expiry_time' : datetime.now() + timedelta(defaultSessionTime)
         }
         return response.plusResponse(200, "session_created", {"session_id" : session_id})
@@ -36,11 +36,21 @@ class delete_session(APIView):
 
 
 
-class verify_session() :
-    def checkSessionvalidity(self, session_id) :
+class verify_and_update_session_data() :
+    def is_session_valid(self, session_id) :
         if session_id not in session:
             return False
         if session[session_id]['session_expiry_time'] < datetime.now():
             del session[session_id]
             return False
         return True
+    
+    
+    def remove_oldest_file(self, session_id) :
+        os.remove(session[session_id]['flies'].pop(0)['relative_path'])
+
+
+
+    def add_new_file(self, session_id, file) :
+        session[session_id]['flies'].append(file)
+        session[session_id]['total_sum'] += result

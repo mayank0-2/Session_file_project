@@ -17,8 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from api_module.sessionHandler import create_session, delete_session
+from api_module.fileHandler import file_handler
 
 urlpatterns = [
     path('v1/create-session', create_session.as_view(), name = "CreateSession"),
     path('v1/delete-session', delete_session.as_view(), name ='DeleteSession'),
+    path('v1/upload-file/<str:session_id>', file_handler.as_view(), name = "UploadFile"),
 ]
