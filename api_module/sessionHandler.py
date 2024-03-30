@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from config import Config
 from django.http import JsonResponse
 from api_module.response import ResponseFormat
+from api_module.decorator import isValidRequest
 
 session = {}
 response = ResponseFormat()
@@ -24,6 +25,7 @@ class create_session(APIView):
 
 
 class delete_session(APIView):
+    @isValidRequest
     def post(self, request):
         session_id = request.data.get('session_id')
         if session_id in session:

@@ -13,10 +13,8 @@ class file_handler(APIView) :
             file = request.FILES.get(f'file{i}')
             if file is None :
                 break
-            print(file, "---------------->file")
             if not file :
                 return response.plusResponse(400, "File_not_found", {})
-            print(file.name, "---->")
 
             name_path = f"uploads/{file.name}_session_{session_id}"
 
